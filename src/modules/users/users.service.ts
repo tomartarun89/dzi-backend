@@ -1,6 +1,6 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { User } from './user.entity';
-import { UserDto } from './dto/user.dto';
+import { Inject, Injectable } from '@nestjs/common';
+
+import { User, UserDto } from '.';
 import { USER_REPOSITORY } from '../../core/constants';
 
 @Injectable()

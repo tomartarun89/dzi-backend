@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/index';
+import * as bcrypt from 'bcrypt';
+
+import { UsersService } from '../users';
 
 @Injectable()
 export class AuthService {
@@ -25,22 +26,24 @@ export class AuthService {
 
     public async login(user) {
         const token = await this.generateToken(user);
-        return { user, token };
+        return { token: token };
     }
 
     public async create(user) {
         const pass = await this.hashPassword(user.password);
         const newUser = await this.userService.create({ ...user, password: pass });
-        const { password, ...result } = newUser['dataValues'];
-        const token = await this.generateToken(result);
-        return { user: result, token };
+        const { id, email } = newUser['dataValues'];
+        const userData = { id: id, email: email };
+        const token = await this.generateToken(userData);
+        return { user: userData, token };
     }
 
     private async generateToken(user) {
-        return this.jwtService.sign(user);
+        const token = await this.jwtService.signAsync(user);
+        return token;
     }
 
-    private async hashPassword(password: string) {
+    private async hashPassword(password: string): Promise<string> {
         const hash = await bcrypt.hash(password, 10);
         return hash;
     }
@@ -48,5 +51,19 @@ export class AuthService {
     private async comparePassword(enteredPassword: string, dbPassword: string) {
         const match = await bcrypt.compare(enteredPassword, dbPassword);
         return match;
+    }
+
+    async updatePassword(id, oldPassword, newPassword) {
+        if (oldPassword === newPassword) {
+            throw new HttpException('Old password and the new password should be different.', HttpStatus.BAD_REQUEST);
+        }
+        const user = await this.userService.findOneById(id);
+        const check = await this.comparePassword(oldPassword, user.password);
+        if (!check) {
+            throw new HttpException('Old password and the existing password does not matches.', HttpStatus.FORBIDDEN);
+        }
+        //TODO: Validate the newPassword for security vulnerabilities.
+        user.set('password', await this.hashPassword(newPassword));
+        user.save();
     }
 }
