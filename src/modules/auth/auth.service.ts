@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { UsersService } from '../users';
+import { User, UsersService } from '../users';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +12,7 @@ export class AuthService {
     ) { }
 
     async validateUser(username: string, pass: string) {
-        const user = await this.userService.findOneByEmail(username);
+        const user: User = await this.userService.findOneByEmail(username);
         if (!user) {
             return null;
         }
@@ -20,8 +20,11 @@ export class AuthService {
         if (!match) {
             return null;
         }
-        const { password, ...result } = user['dataValues'];
-        return result;
+        const payload = {
+            id: user.getDataValue('id'),
+            email: user.getDataValue('email')
+        }
+        return payload;
     }
 
     public async login(user) {
@@ -53,16 +56,15 @@ export class AuthService {
         return match;
     }
 
-    async updatePassword(id, oldPassword, newPassword) {
+    async updatePassword(email, oldPassword, newPassword) {
         if (oldPassword === newPassword) {
             throw new HttpException('Old password and the new password should be different.', HttpStatus.BAD_REQUEST);
         }
-        const user = await this.userService.findOneById(id);
+        const user = await this.userService.findOneByEmail(email);
         const check = await this.comparePassword(oldPassword, user.password);
         if (!check) {
             throw new HttpException('Old password and the existing password does not matches.', HttpStatus.FORBIDDEN);
         }
-        //TODO: Validate the newPassword for security vulnerabilities.
         user.set('password', await this.hashPassword(newPassword));
         user.save();
     }

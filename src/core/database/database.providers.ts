@@ -1,8 +1,10 @@
 import { Sequelize } from 'sequelize-typescript';
 
-import { User } from '../../modules/users';
+import { User, UserStatus, UserSubType, UserType } from '../../modules/users';
+import { Broker } from '../../modules/brokers';
 import { DEVELOPMENT, PRODUCTION, SEQUELIZE, TEST } from '../constants';
 import { databaseConfig } from './database.config';
+import { Groups, UserGroupMapping } from "../../modules/groups";
 
 export const databaseProviders = [{
     provide: SEQUELIZE,
@@ -22,9 +24,9 @@ export const databaseProviders = [{
                 config = databaseConfig.development;
         }
         const sequelize = new Sequelize(config);
-        sequelize.addModels([User]);
+        sequelize.addModels([User, UserSubType, UserType, UserStatus, Broker, Groups, UserGroupMapping]);
         await sequelize.sync(
-            { force: true }
+            // { force: true }
         );
         return sequelize;
     },

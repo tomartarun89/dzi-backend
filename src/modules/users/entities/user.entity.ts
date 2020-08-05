@@ -1,4 +1,10 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, BelongsToMany, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+
+import { Broker } from '../../brokers';
+import { Groups, UserGroupMapping } from '../../groups';
+import { UserStatus } from './user-status.entity';
+import { UserSubType } from './user-sub-type.entity';
+import { UserType } from './user-type.entity';
 
 @Table({
     tableName: 'users'
@@ -8,9 +14,10 @@ export class User extends Model<User> {
     @Column({
         type: DataType.BIGINT,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
+        unique: true
     })
-    id: number;
+    userId: number;
 
     @Column({
         type: DataType.STRING,
@@ -61,5 +68,44 @@ export class User extends Model<User> {
     })
     mobile: string;
 
-    //TODO: Add a column for role mapping.
+
+    @ForeignKey(() => UserType)
+    @Column({
+        type: DataType.INTEGER
+    })
+    userTypeId: number;
+
+
+    @ForeignKey(() => UserSubType)
+    @Column({
+        type: DataType.INTEGER
+    })
+    userSubTypeId: number;
+
+    @ForeignKey(() => UserStatus)
+    @Column({
+        type: DataType.INTEGER
+    })
+    userStatusId: number;
+
+    @ForeignKey(() => Broker)
+    @Column({
+        type: DataType.INTEGER
+    })
+    brokerId: number;
+
+    @BelongsToMany(() => Groups, () => UserGroupMapping)
+    groups: Groups[];
+
+    @BelongsTo(() => UserType)
+    userType: UserSubType
+
+    @BelongsTo(() => UserSubType)
+    userSubType: UserSubType
+
+    @BelongsTo(() => UserStatus)
+    userStatus: UserStatus
+
+    @BelongsTo(() => Broker)
+    broker: Broker;
 }
