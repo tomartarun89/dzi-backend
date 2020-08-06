@@ -1,7 +1,7 @@
 import { BelongsTo, BelongsToMany, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 
 import { Broker } from '../../brokers';
-import { Groups, UserGroupMapping } from '../../groups';
+import { Groups, UserGroupMapping } from '../../permissions';
 import { UserStatus } from './user-status.entity';
 import { UserSubType } from './user-sub-type.entity';
 import { UserType } from './user-type.entity';

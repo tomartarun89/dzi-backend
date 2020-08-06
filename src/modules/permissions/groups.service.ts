@@ -1,11 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, HttpException, HttpStatus } from '@nestjs/common';
 
-import { Groups } from './entities/groups.entity';
 import { GROUPS_REPOSITORY } from '../../core/constants';
 import { GroupDto } from './dto/groups.dto';
+import { Groups } from './entities/groups.entity';
 
 @Injectable()
 export class GroupsService {
+
     constructor(@Inject(GROUPS_REPOSITORY) private readonly groupsRepository: typeof Groups) { }
 
     async findAllGroups(): Promise<Groups[]> {
@@ -35,5 +36,14 @@ export class GroupsService {
             throw new Error('Invalid group id.');
         }
 
+    }
+
+    async deleteById(groupId) {
+        const group = await this.findOneById(groupId);
+        if (!!group) {
+            group.destroy();
+        } else {
+            throw new HttpException('Invalid groupId.', HttpStatus.BAD_REQUEST);
+        }
     }
 }

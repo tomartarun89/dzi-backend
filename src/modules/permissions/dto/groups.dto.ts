@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Type } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
+
 import { Groups } from '../entities/groups.entity';
 
 export class GroupDto {

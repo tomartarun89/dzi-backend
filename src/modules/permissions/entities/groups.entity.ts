@@ -1,8 +1,7 @@
-import { BelongsToMany, Column, DataType, Model, Table } from 'sequelize-typescript';
+import { BelongsToMany, Column, DataType, Model, Table, IsNumeric } from 'sequelize-typescript';
 
 import { User } from '../../users';
 import { UserGroupMapping } from './user-group-mapping.entity';
-import { Exclude } from 'class-transformer';
 
 @Table({
     tableName: 'groups',
@@ -17,7 +16,7 @@ export class Groups extends Model<Groups>{
         unique: true
     })
     groupId: number;
-
+    // TODO: Implement data validation for special characters.
     @Column({
         type: DataType.STRING,
         allowNull: false,

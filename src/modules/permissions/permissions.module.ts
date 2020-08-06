@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 
-import { GroupsController } from './groups.controller';
+import { PermissionsController } from './permissions.controller';
 import { groupsProvider } from './groups.provider';
 import { GroupsService } from './groups.service';
 
 @Module({
-  controllers: [GroupsController],
+  controllers: [PermissionsController],
   providers: [GroupsService, ...groupsProvider],
   exports: [GroupsService]
 })
-export class GroupsModule { }
+export class PermissionsModule { }

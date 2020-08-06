@@ -4,7 +4,7 @@ import { User, UserStatus, UserSubType, UserType } from '../../modules/users';
 import { Broker } from '../../modules/brokers';
 import { DEVELOPMENT, PRODUCTION, SEQUELIZE, TEST } from '../constants';
 import { databaseConfig } from './database.config';
-import { Groups, UserGroupMapping } from "../../modules/groups";
+import { Groups, UserGroupMapping } from "../../modules/permissions";
 
 export const databaseProviders = [{
     provide: SEQUELIZE,

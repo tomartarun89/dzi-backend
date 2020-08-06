@@ -8,7 +8,7 @@ import { DatabaseModule } from './core/database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { BrokersModule } from './modules/brokers/broker.module';
-import { GroupsModule } from './modules/groups/groups.module';
+import { PermissionsModule } from './modules/permissions/permissions.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { GroupsModule } from './modules/groups/groups.module';
     UsersModule,
     AuthModule,
     BrokersModule,
-    GroupsModule
+    PermissionsModule
   ],
   controllers: [AppController],
   providers: [AppService],
