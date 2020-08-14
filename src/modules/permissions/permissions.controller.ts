@@ -12,12 +12,13 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import { GroupDto } from './dto/groups.dto';
 import { GroupsService } from './groups.service';
 
 @ApiTags('Permissions')
+@ApiBearerAuth()
 @Controller('permissions')
 export class PermissionsController {
 

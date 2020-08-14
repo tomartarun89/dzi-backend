@@ -70,6 +70,7 @@
     "typescript": "^3.7.4"
   },
   "jest": {
+    "verbose": true,
     "moduleFileExtensions": [
       "js",
       "json",

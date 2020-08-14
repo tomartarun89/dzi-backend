@@ -34,11 +34,30 @@ $ npm install
 
 ## Running the app
 
-Delete the .demo from the .env.demo file and configure the attributes accordingly.
+<br>
+Requirements:<br>
+  <ul>
+  <li>Postgresql 11+</li>
+  <li>Node v12+</li>
+  </ul>
 
-Requirements:
-  Postgresql 11+
-  Node v12+
+Configuration:<br>
+
+<b>Changes in the environment file.</b><br>
+<ol>
+<li>Delete the .demo part from the .env.demo file.</li>
+<li>Create a database in the postgresql and update the value of this attribute with the database that you created DB_NAME_DEVELOPMENT=development_database_name</li>
+<li>Update 
+<ul>
+<li>DB_USER=username_used_during_installation</li>
+<li>DB_PASS=password_used_during_installation</li>
+</ul>
+with the username and the password that you used while installing the postgresql. Defaults are <strong>postgres</strong> for both the username and the password.
+<li>Update <b>TOKEN_EXPIRATION=number_followed_by_h</b> with the amount of time you want the token to be valid. <br>eg. <b>TOKEN_EXPIRATION=1h</b> here the token will be valid for 1 hour.
+</ol>
+
+<b>In order to check the implemented endpoint, hit the swagger endpoint i.e. http://localhost:3000/api
+<br>
   
 ```bash
 # development
@@ -49,6 +68,9 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+
+# running the unit test cases and check the test coverage
+$ npm run test:cov
 ```
 ## Support
 

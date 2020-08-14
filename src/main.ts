@@ -6,9 +6,9 @@ import { ValidateInputPipe } from './core/pipes/validate.pipe';
 
 async function bootstrap() {
   const port = process.env.PORT;
-  const app = await NestFactory.create(AppModule,{cors:true});
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api/v1');
-  const options = new DocumentBuilder()
+  const options = new DocumentBuilder().addBearerAuth()
     .setTitle('DZI Backend')
     .setDescription('User service.')
     .setVersion('1.0')
